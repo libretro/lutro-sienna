@@ -53,7 +53,7 @@ end
 
 local play_instance, stop_instance
 function Source:play()
-	remove_stopped(self.instances)
+	--remove_stopped(self.instances)
 	if self._paused then self:stop() end
 	local instance = newInstance(get_target(self.target), self.how)
 
