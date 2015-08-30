@@ -250,9 +250,9 @@ function Loader._processTileSet(t, map)
 					local trans = { tonumber( "0x" .. v.xarg.trans:sub(1,2) ), 
 									tonumber( "0x" .. v.xarg.trans:sub(3,4) ), 
 									tonumber( "0x" .. v.xarg.trans:sub(5,6) )}
-					image:mapPixel( function(x,y,r,g,b,a)
-					return r,g,b, (trans[1] == r and trans[2] == g and trans[3] ==b and 0) or a  end
-					)
+					-- image:mapPixel( function(x,y,r,g,b,a)
+					-- return r,g,b, (trans[1] == r and trans[2] == g and trans[3] ==b and 0) or a  end
+					-- )
 				end
 				-- Set the image information
 				image, imageWidth, imageHeight = Loader._newImage(image)
