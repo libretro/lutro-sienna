@@ -24,7 +24,7 @@ function loadMap(level)
 
 	map = loader.load(map_files[level])
 	map.drawObjects = false
-	map.useSpriteBatch = true
+	map.useSpriteBatch = false
 	fgtiles = map.tileLayers.fg.tileData
 
 	map.enemies = {}
