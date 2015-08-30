@@ -1,3 +1,5 @@
+love = lutro
+
 require("slam")
 require("resources")
 require("map")
@@ -24,6 +26,11 @@ local lg = love.graphics
 TILEW = 16
 WIDTH = 300
 HEIGHT = 200
+
+function love.conf(t)
+	t.width = WIDTH
+	t.height = HEIGHT
+end
 
 STATE_MAINMENU = 0
 STATE_INGAME_MENU = 1
@@ -55,7 +62,7 @@ function love.update(dt)
 		-- Upper bound on frame delay
 		if dt > 0.06 then dt = 0.06 end
 
-		if love.keyboard.isDown("s") then
+		if love.input.joypad("select") then
 			dt = dt/100
 		end
 
@@ -111,7 +118,7 @@ end
 local scale_x, scale_y
 
 function love.draw()
-	lg.scale(scale_x, scale_y)
+	love.graphics.clear()
 
 	-- STATE: In game
 	if gamestate == STATE_INGAME then
@@ -138,12 +145,16 @@ function love.draw()
 end
 
 function drawIngame()
-	lg.translate(-tx, -ty)
+	lg.translate(-tx-16, -ty-16)
 
 	map:setDrawRange(tx,ty,WIDTH,HEIGHT)
 	map:draw()
 
+	lg.translate(-tx-12, -ty+1) -- hack
+
 	player:draw()
+
+	lg.translate(-tx, -ty) -- hack
 
 	for i,v in ipairs(map.entities) do
 		v:draw()
@@ -228,19 +239,19 @@ function getTimerString(time)
 	return string.format("%02d'%02d\"%02d",min,sec,msec)
 end
 
-function love.keypressed(k)
+function love.gamepadpressed(i, k)
 	if gamestate == STATE_INGAME then
-		if k == " " or k == "z" or k == "x" then
+		if k == "a" then
 			player:keypressed(k)
-		elseif k == "escape" then
+		elseif k == "b" then
 			gamestate = STATE_INGAME_MENU
 			current_menu = ingame_menu
 			ingame_menu.selected = 1
-		elseif k == "r" then
+		elseif k == "x" then
 			player:kill()
-		elseif k == "return" then
+		elseif k == "start" then
 			reloadMap()
-		elseif k == "c" then
+		elseif k == "y" then
 			gamestate = STATE_LEVEL_COMPLETED
 		end
 	elseif gamestate == STATE_INGAME_MENU or gamestate == STATE_MAINMENU then
@@ -252,9 +263,9 @@ function love.keypressed(k)
 	end
 end
 
-function love.keyreleased(k)
+function love.gamepadreleased(i, k)
 	if gamestate == STATE_INGAME then
-		if k ~= "escape" and k ~= "r" then
+		if k ~= "b" and k ~= "x" then
 			player:keyreleased(k)
 		end
 	end
@@ -354,8 +365,8 @@ function setScale(scale)
 		scale_y = scale
 	end
 
-	SCREEN_WIDTH  = WIDTH*SCALE
-	SCREEN_HEIGHT = HEIGHT*SCALE
+	SCREEN_WIDTH  = WIDTH
+	SCREEN_HEIGHT = HEIGHT
 
 	love.window.setMode(SCREEN_WIDTH, SCREEN_HEIGHT, {
 		fullscreen=false,

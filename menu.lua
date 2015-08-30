@@ -38,12 +38,12 @@ function Menu:keypressed(k)
 		if self.selected == 0 then
 			self.selected = self.length
 		end
-	elseif k == "return" then
+	elseif k == "start" then
 		love.audio.play(snd.Blip)
 		if self.functions[self.selected] then
 			self.functions[self.selected](self)
 		end
-	elseif k == "escape" then
+	elseif k == "b" then
 		love.audio.play(snd.Blip)
 		self.escape_function(self)
 	end
