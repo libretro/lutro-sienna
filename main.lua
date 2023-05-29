@@ -145,16 +145,15 @@ function love.draw()
 end
 
 function drawIngame()
+	lg.push()
 	lg.translate(-tx-16, -ty-16)
 
 	map:setDrawRange(tx,ty,WIDTH,HEIGHT)
 	map:draw()
 
-	lg.translate(-tx-12, -ty+1) -- hack
+	lg.translate(4, 17)
 
 	player:draw()
-
-	lg.translate(-tx, -ty) -- hack
 
 	for i,v in ipairs(map.entities) do
 		v:draw()
